@@ -49,7 +49,7 @@ export default function HomeScreen() {
       <SafeAreaView style={styles.safeArea}>
         <ThemedView style={styles.heroSection}>
           <ThemedText type="title" style={styles.title}>
-            Autism Information Portal
+            Autism Information Portal: Explore, Learn, and Understand
           </ThemedText>
         </ThemedView>
 

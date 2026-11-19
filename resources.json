@@ -55,6 +55,21 @@
       "name": "Autism Society of Washington",
       "description": "Provides a statewide directory of local support groups, sensory-friendly spaces, and community resources across Washington.",
       "url": "https://www.autismsocietyofwa.org/state-resources"
+    },
+    {
+      "name": "Compass",
+      "description": "Compass icon for resources.",
+      "url": "https://www.flaticon.com/free-icon/compass_795653?term=compass&page=1&position=1&origin=search&related_id=795653"
+    },
+     {
+      "name": "Open Book",
+      "description": "Open book icon for glossary.",
+      "url": "https://www.flaticon.com/free-icon/open-book_171322?term=book&page=1&position=1&origin=search&related_id=171322"
+    },
+    {
+      "name": "Info",
+      "description": "Info icon for About.",
+      "url": "https://www.flaticon.com/free-icon/info_471662?term=info&page=1&position=1&origin=search&related_id=471662"
     }
   ]
 }

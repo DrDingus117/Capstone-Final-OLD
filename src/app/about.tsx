@@ -28,18 +28,18 @@ export default function MultiSectionTemplate() {
         <View style={[styles.section, { backgroundColor: theme.cardBg }]}>
           <Text style={[styles.heading, { color: theme.text }]}>About the Web/Mobile app</Text>
           <Text style={[styles.body, { color: theme.subText }]}>
-            This app was created to help teach what autism is and the different details. My current plan is to get the Glossary working with drop downs and this about page looking nice 
-          </Text>
+            This app was created to help teach what autism is (something simple for now doesn't hurt. I can flesh this out later and make it pretty)         </Text>
         </View>
 
         {/* Section 3: Footer / Extra */}
         <View style={[styles.section, { backgroundColor: theme.cardBg }]}>
           <Text style={[styles.heading, { color: theme.text }]}>Resources</Text>
           <Text style={[styles.body, { color: theme.subText }]}>
+            All icons from https://www.flaticon.com
             Open Book free icon (Glossary) 
             Info free icon (About)
-            Maps And Flags free icon (Resources)
-            Links will be in content.json (if i can get it working)
+            Compass free icon (Resources)
+            Links are in the Resources screen
 
 
           </Text>

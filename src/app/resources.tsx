@@ -105,7 +105,7 @@ export default function ResourcesScreen() {
     >
       <View style={styles.mainWrapper}>
         <Text style={[styles.pageTitle, { color: theme.text }]}>
-          Helpful Resources
+          Helpful Resources & Where I got the Icons
         </Text>
         <Text style={[styles.pageSubtitle, { color: theme.subText }]}>
           Trusted advocacy groups and research organizations for further reading.
