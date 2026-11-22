@@ -1,15 +1,8 @@
 import { useState } from 'react';
 import {
-  Linking,
-  Platform,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
+  ActivityIndicator, Linking, Platform, Pressable, ScrollView, StyleSheet, Text, useColorScheme, View,
 } from 'react-native';
-import resourcesData from '../../resources.json';
+import { useApi } from '../hooks/use-api';
 
 type Resource = {
   name: string;
@@ -98,9 +91,14 @@ export default function ResourcesScreen() {
     link: isDark ? '#60A5FA' : '#2563EB',
   };
 
+  const { data, loading, error, reload } = useApi<{
+    resources: Resource[];
+    disclaimer: string;
+  }>('/api/resources');
+
   return (
     <ScrollView
-      style={{ backgroundColor: theme.bg }}
+      style={{ flex: 1, backgroundColor: theme.bg }}
       contentContainerStyle={styles.scrollContainer}
     >
       <View style={styles.mainWrapper}>
@@ -111,8 +109,21 @@ export default function ResourcesScreen() {
           Trusted advocacy groups and research organizations for further reading.
         </Text>
 
+        {loading && <ActivityIndicator color={theme.link} />}
+
+        {error && (
+          <View style={[styles.statusBox, { backgroundColor: theme.cardBg }]}>
+            <Text style={[styles.statusText, { color: theme.text }]}>
+              Couldn't load resources. Make sure the API is running. ({error})
+            </Text>
+            <Pressable onPress={reload}>
+              <Text style={[styles.retryText, { color: theme.link }]}>Try again</Text>
+            </Pressable>
+          </View>
+        )}
+
         <View style={[styles.section, { backgroundColor: theme.cardBg }]}>
-          {resourcesData.resources.map((resource) => (
+          {data?.resources.map((resource) => (
             <ResourceDropdownCard
               key={resource.name}
               resource={resource}
@@ -128,7 +139,7 @@ export default function ResourcesScreen() {
           ]}
         >
           <Text style={[styles.disclaimerText, { color: theme.subText }]}>
-            {resourcesData.disclaimer}
+            {data?.disclaimer}
           </Text>
         </View>
       </View>
@@ -137,6 +148,22 @@ export default function ResourcesScreen() {
 }
 
 const styles = StyleSheet.create({
+  statusBox: {
+    width: '100%',
+    padding: 16,
+    borderRadius: 10,
+    alignItems: 'center',
+    gap: 10,
+  },
+  statusText: {
+    fontSize: 15,
+    textAlign: 'center',
+  },
+  retryText: {
+    fontSize: 15,
+    fontWeight: '600',
+    textDecorationLine: 'underline',
+  },
   scrollContainer: {
     flexGrow: 1,
     alignItems: 'center',

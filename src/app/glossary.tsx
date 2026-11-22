@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import {
+  ActivityIndicator,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -7,7 +8,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-import contentData from '../../content.json';
+import { useApi } from '../hooks/use-api';
 
 type Topic = {
   id: string;
@@ -83,7 +84,7 @@ function TopicDropdownCard({ topic, theme }: { topic: Topic; theme: Theme }) {
   );
 }
 
-export default function GlossaryScreen() {
+export default function Glossary() {
   const isDark = (useColorScheme() ?? 'light') === 'dark';
 
   const theme: Theme = {
@@ -97,9 +98,11 @@ export default function GlossaryScreen() {
     link: isDark ? '#60A5FA' : '#2563EB',
   };
 
+  const { data: topics, loading, error, reload } = useApi<Topic[]>('/api/topics');
+
   return (
     <ScrollView
-      style={{ backgroundColor: theme.bg }}
+      style={{ flex: 1, backgroundColor: theme.bg }}
       contentContainerStyle={styles.scrollContainer}
     >
       <View style={styles.mainWrapper}>
@@ -107,7 +110,20 @@ export default function GlossaryScreen() {
           Topics & Experiences
         </Text>
 
-        {contentData.topics.map((topic) => (
+        {loading && <ActivityIndicator color={theme.link} />}
+
+        {error && (
+          <View style={[styles.statusBox, { backgroundColor: theme.cardBg }]}>
+            <Text style={[styles.statusText, { color: theme.text }]}>
+              Couldn't load topics. Make sure the API is running. ({error})
+            </Text>
+            <Pressable onPress={reload}>
+              <Text style={[styles.retryText, { color: theme.link }]}>Try again</Text>
+            </Pressable>
+          </View>
+        )}
+
+        {topics?.map((topic) => (
           <TopicDropdownCard key={topic.id} topic={topic} theme={theme} />
         ))}
       </View>
@@ -116,11 +132,27 @@ export default function GlossaryScreen() {
 }
 
 const styles = StyleSheet.create({
-  scrollContainer: {
-    flexGrow: 1,
+  statusBox: {
+    width: '100%',
+    padding: 16,
+    borderRadius: 10,
     alignItems: 'center',
-    paddingVertical: 40,
-    paddingHorizontal: 20,
+    gap: 10,
+  },
+  statusText: {
+    fontSize: 15,
+    textAlign: 'center',
+  },
+  retryText: {
+    fontSize: 15,
+    fontWeight: '600',
+    textDecorationLine: 'underline',
+  },
+  scrollContainer: {
+    alignItems: 'center', // centers mainWrapper horizontally
+    paddingTop: 20,
+    paddingHorizontal: 16,
+    paddingBottom: 40,
   },
   mainWrapper: {
     width: '100%',
@@ -131,7 +163,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 4,
+    marginBottom: 20,
   },
   section: {
     width: '100%',
@@ -156,7 +188,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   topicSummary: {
-    fontSize: 15,
     textAlign: 'center',
     lineHeight: 22,
     marginBottom: 4,
